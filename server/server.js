@@ -7,10 +7,12 @@ const path = require('path');
 const expressSession = require('express-session');
 const FileStore = require('session-file-store')(expressSession);
 
+const UserApiRoter = require('./src/routers/UserApiRouter');
+
 const sessionConfig = {
-  name: 'Name',
+  name: 'MyGame',
   store: new FileStore(), // добавить после установки session-file-store
-  secret: process.env.COOKIE_SECRET || 'some text',
+  secret: process.env.COOKIE_SECRET || 'sometext',
   resave: false,
   saveUninitialized: false,
   cookie: {
@@ -28,5 +30,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public/')));
+
+app.use('/userapi', UserApiRoter);
 
 app.listen(PORT, () => console.log(`Сервер крутится на ${PORT} порту!`));
