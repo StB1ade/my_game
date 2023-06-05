@@ -6,6 +6,26 @@ const { Topics } = require('../../db/models');
 router.get('/', async (req, res) => {
   try {
     const { user } = req.session;
+    const questionArrDirty = await Questions.findAll();
+    const questionArr = questionArrDirty.map((el) => el.get({ plain: true }));
+
+    Promise.all(
+      questionArr.map(async (el) => {
+        await CurrentQuestions.create({
+          user_id: user.id,
+          question_id: el.id,
+        });
+      })
+    );
+    res.json({ msg: 'success' });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get('/questions', async (req, res) => {
+  try {
+    const { user } = req.session;
     const currQuestionsDirty = (
       await CurrentQuestions.findAll({
         where: { user_id: user.id },
@@ -19,7 +39,12 @@ router.get('/', async (req, res) => {
       })
     ).map((el) => el.get({ plain: true }));
 
-    const currQuestions = currQuestionsDirty.map((el) => el.Questions);
+    const currQuestions = currQuestionsDirty.map((el) => {
+      el.question = el.Questions.question;
+      el.right_answer = el.Questions.right_answer;
+      el.score = el.Questions.score;
+      return el;
+    });
 
     const currQuestions2d = [];
 
@@ -32,6 +57,7 @@ router.get('/', async (req, res) => {
             question: el.question,
             right_answer: el.right_answer,
             score: el.score,
+            answered: el.answered,
           },
         ];
       } else {
@@ -39,6 +65,7 @@ router.get('/', async (req, res) => {
           question: el.question,
           right_answer: el.right_answer,
           score: el.score,
+          answered: el.answered,
         });
       }
     });
@@ -51,7 +78,7 @@ router.get('/', async (req, res) => {
       return el;
     });
 
-    res.json(gameArr);
+    res.json({ gameArr });
   } catch (error) {
     console.log(error);
   }
