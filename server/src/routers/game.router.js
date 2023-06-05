@@ -29,7 +29,7 @@ router.get('/new', async (req, res) => {
 router.get('/questions', async (req, res) => {
   try {
     const { user } = req.session;
-    // console.log('user=====>', user);
+    console.log('user=====>', user);
     const currQuestionsDirty = (
       await CurrentQuestions.findAll({
         where: { user_id: user.id },
