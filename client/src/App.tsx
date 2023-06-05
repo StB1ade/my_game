@@ -5,6 +5,7 @@ import { Login } from "./components/login/Login"
 import { useEffect, useState } from "react"
 import { useAppDispatch } from "./redux/store/hook"
 import { checkUser } from "./redux/store/userSlice"
+import { GameBoard } from "./components/gameBoard/GameBoard"
 
 
 function App() {
@@ -40,6 +41,8 @@ function App() {
      <Route path="/reg" element={<Registration />}/>
      <Route path="/login" element={<Login />}/>
      </Routes>   
+
+     <GameBoard/>
     </>
   )
 }
