@@ -1,6 +1,9 @@
 import React from 'react'
 
 export const GameBoard = () => {
+
+  
+
   return (
     <>
     <div className='flex justify-center'>
