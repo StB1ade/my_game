@@ -6,9 +6,8 @@ const { Users } = require('../../db/models');
 router.get('/check', async (req, res) => {
   if (req.session.user) {
     const userCheck = { id: req.session.user.id, userName: req.session.user.userName };
-    // console.log(userCheck);
     res.json(userCheck);
-  } else { res.json('Войдите в систему или зарегестрируйтесь!'); }
+  } else { res.json({ msg: 'Войдите в систему или зарегестрируйтесь!' }); }
 });
 
 router.post('/reg', async (req, res) => {
@@ -27,7 +26,6 @@ router.post('/reg', async (req, res) => {
       const user = userReg.get({ plain: true });
       req.session.user = user;
       const answerUserReg = { id: req.session.user.id, userName: req.session.user.userName };
-      // console.log(answerUserReg);
       res.json(answerUserReg);
     }
   } catch (error) {
@@ -39,7 +37,6 @@ router.post('/login', async (req, res) => {
   const {
     email, password,
   } = req.body;
-
   try {
     const userLog = await Users.findOne({ where: { email } });
     if (!userLog) {
@@ -54,7 +51,6 @@ router.post('/login', async (req, res) => {
       if (passwordChek) {
         req.session.user = userData;
         const answerUserLog = { id: req.session.user.id, userName: req.session.user.userName };
-        // console.log(answerUserLog);
         res.json(answerUserLog);
       }
     }
