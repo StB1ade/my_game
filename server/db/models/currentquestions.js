@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class CurrentQuestions extends Model {
     /**
@@ -14,12 +12,16 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Questions, { foreignKey: 'question_id' });
     }
   }
-  CurrentQuestions.init({
-    user_id: DataTypes.INTEGER,
-    question_id: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'CurrentQuestions',
-  });
+  CurrentQuestions.init(
+    {
+      user_id: DataTypes.INTEGER,
+      question_id: DataTypes.INTEGER,
+      answered: DataTypes.BOOLEAN,
+    },
+    {
+      sequelize,
+      modelName: 'CurrentQuestions',
+    }
+  );
   return CurrentQuestions;
 };
