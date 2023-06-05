@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom"
 import { NavBar } from "./components/navBar/NavBar"
 import { Registration } from "./components/registration/Registration"
 import { Login } from "./components/login/Login"
+import { Profile } from "./components/profile/Profile"
+
 import { useEffect, useState } from "react"
 import { useAppDispatch } from "./redux/store/hook"
 import { checkUser } from "./redux/store/userSlice"
@@ -40,6 +42,7 @@ function App() {
      <Routes>
      <Route path="/reg" element={<Registration />}/>
      <Route path="/login" element={<Login />}/>
+     <Route path='/profile' element={<Profile/>}/>
      </Routes>   
 
      <GameBoard/>

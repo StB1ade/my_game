@@ -10,7 +10,7 @@ const gameRouter = require('./src/routers/game.router');
 
 const UserApiRoter = require('./src/routers/UserApiRouter');
 
-
+const profileRouter = require('./src/routers/profile.router');
 
 const sessionConfig = {
   name: 'MyGame',
@@ -23,7 +23,6 @@ const sessionConfig = {
     httpOnly: false,
   },
 };
-
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -43,5 +42,6 @@ app.use('/game', gameRouter);
 
 app.use('/userapi', UserApiRoter);
 
-app.listen(PORT, () => console.log(`Сервер крутится на ${PORT} порту!`));
+app.use('/profile', profileRouter);
 
+app.listen(PORT, () => console.log(`Сервер крутится на ${PORT} порту!`));

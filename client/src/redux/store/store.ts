@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import  UserSlice  from './userSlice'
+import profileSlice from './profileSlice'
+
 
 
 
 export const store = configureStore({
   reducer: {
     user: UserSlice,
-    
+    userGames: profileSlice
   },
   
 })
