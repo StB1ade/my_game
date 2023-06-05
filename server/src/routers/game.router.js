@@ -61,9 +61,10 @@ router.get('/questions', async (req, res) => {
         (el2) => el2?.title === el.topic_id
       );
       if (repIndex === -1) {
-        const topic = { title: el.topic_id };
+        const topic = { title: el.topic_id, id: el.topic_id };
         topic.questions = [
           {
+            id: el.question_id,
             question: el.question,
             right_answer: el.right_answer,
             score: el.score,
@@ -73,6 +74,7 @@ router.get('/questions', async (req, res) => {
         currQuestions2d.push(topic);
       } else {
         currQuestions2d[repIndex]?.questions.push({
+          id: el.question_id,
           question: el.question,
           right_answer: el.right_answer,
           score: el.score,
