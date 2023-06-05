@@ -17,7 +17,7 @@ module.exports = {
           title: 'Пиво',
         },
       ],
-      {}
+      {},
     );
     await queryInterface.bulkInsert(
       'Questions',
@@ -151,7 +151,7 @@ module.exports = {
           topic_id: 4,
         },
       ],
-      {}
+      {},
     );
 
     await queryInterface.bulkInsert(
@@ -238,7 +238,18 @@ module.exports = {
           question_id: 20,
         },
       ],
-      {}
+      {},
+    );
+    await queryInterface.bulkInsert(
+      'Results',
+      [
+        {
+          total_score: 1200,
+          user_id: 1,
+          finished: true,
+        },
+      ],
+      {},
     );
   },
 
