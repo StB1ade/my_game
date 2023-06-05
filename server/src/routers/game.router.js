@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { CurrentQuestions } = require('../../db/models');
 const { Questions } = require('../../db/models');
 const { Topics } = require('../../db/models');
+const { Results } = require('../../db/models');
 
 router.get('/new', async (req, res) => {
   try {
@@ -9,6 +10,9 @@ router.get('/new', async (req, res) => {
     await CurrentQuestions.destroy({
       where: { user_id: user.id },
     });
+    await Results.destroy({ where: { user_id: user.id, finished: false } });
+    await Results.create({ user_id: user.id });
+
     const questionArrDirty = await Questions.findAll();
     const questionArr = questionArrDirty.map((el) => el.get({ plain: true }));
 
@@ -64,7 +68,8 @@ router.get('/questions', async (req, res) => {
         const topic = { title: el.topic_id, id: el.topic_id };
         topic.questions = [
           {
-            id: el.question_id,
+            id: el.id,
+            questionId: el.question_id,
             question: el.question,
             right_answer: el.right_answer,
             score: el.score,
@@ -74,7 +79,8 @@ router.get('/questions', async (req, res) => {
         currQuestions2d.push(topic);
       } else {
         currQuestions2d[repIndex]?.questions.push({
-          id: el.question_id,
+          id: el.id,
+          questionId: el.question_id,
           question: el.question,
           right_answer: el.right_answer,
           score: el.score,
@@ -94,6 +100,58 @@ router.get('/questions', async (req, res) => {
     });
     console.log('gameArr======>', gameArr);
     res.json({ gameArr });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.put('/questions/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { user } = req.session;
+    const { answer, questionId } = req.body;
+    const result = await Results.findOne({
+      where: { user_id: user.id, finished: false },
+      plain: true,
+    });
+
+    const question = await Questions.findOne({
+      where: { question_id: questionId },
+      plain: true,
+    });
+
+    if (
+      question.right_answer.toLowerCase().split(' ').join('') ===
+      answer.toLowerCase().split(' ').join('')
+    ) {
+      result.score += question.score;
+    } else {
+      result.score -= question.score;
+    }
+
+    await Results.update(
+      {
+        total_score: result.score,
+      },
+      {
+        where: {
+          user_id: user.id,
+          finished: false,
+        },
+      }
+    );
+
+    await CurrentQuestions.update(
+      {
+        answered: true,
+      },
+      {
+        where: {
+          user_id: user.id,
+          id,
+        },
+      }
+    );
   } catch (error) {
     console.log(error);
   }
