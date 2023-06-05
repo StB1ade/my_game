@@ -155,7 +155,7 @@ module.exports = {
     );
 
     await queryInterface.bulkInsert(
-      'Users',
+      'CurrentQuestions',
       [
         {
           user_id: 1,
