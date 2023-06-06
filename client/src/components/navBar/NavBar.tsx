@@ -34,7 +34,15 @@ export const NavBar = () => {
 <nav className="border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
   <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
       <Link to="/">
-        <div className="text-2xl font-bold text-blue-800">YourMyGame</div>
+        <div className=" flex ">
+
+      <img
+            className="mx-auto h-10 w-auto"
+            src="../../../public/свояигра.png"
+            alt="Your Company"
+            />
+        <p className="text-2xl font-bold text-blue-800 ml-4">YourMyGame</p>
+            </div>
       </Link>
       <div className="flex justify-end">
         <Link to="/">

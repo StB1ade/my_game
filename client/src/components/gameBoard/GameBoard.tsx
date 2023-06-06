@@ -115,15 +115,15 @@ export const GameBoard = () => {
 
   return (
     <>
-      <div>
-        <span>Текущий счёт:</span>
-        <span>{scoreGet}</span>
-      </div>
+        <div className="text-center text-xl font-semibold leading-7 text-gray-900 my-10 ">
+          <span>Текущий счёт:</span>
+          <span>{scoreGet}</span>
+        </div>
       <div className="flex justify-center flex-col">
         {questionGet &&
           questionGet.map((el, index) => (
-            <div className="px-5 flex flex-row items-center" key={el.id}>
-              <div className="bg-emerald-400 border-solid border-2 border-black text-center h-10 px-2 whitespace-nowrap rounded-lg">
+            <div className="px-5  flex flex-row items-center" key={el.id}>
+              <div className="bg-emerald-400 w-52 border-solid border-2 border-black text-center h-10 px-2 whitespace-nowrap rounded-lg">
                 {el.title}
               </div>
               <div className="flex flex-row">
@@ -137,7 +137,7 @@ export const GameBoard = () => {
                           ? { visibility: 'hidden' }
                           : { visibility: 'visible' }
                       }
-                      className="bg-lime-400 border-solid border-2 border-black text-center h-10 w-32 rounded-lg hover:rounded-3xl hover:bg-lime-500"
+                      className=" bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 border-solid border-2 border-black text-center h-10 w-32 rounded-lg hover:rounded-3xl"
                       key={el2.id}
                     >
                       {el2.score}
@@ -174,7 +174,7 @@ export const GameBoard = () => {
                   </div>
                   {/*footer*/}
                   <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                    <input
+                    <input className='border-blue-600 border-2 mr-10 w-96 h-10 text-center'
                       type="text"
                       name="answer"
                       onChange={changeInputAnswerHandler}
