@@ -1,5 +1,6 @@
 export type StateType = {
-    userGames: ResultType[]
+    userGames: ResultType[],
+    allGames: ResultType[]
   }
 
   export type ResultType = {
@@ -8,4 +9,5 @@ export type StateType = {
     user_id: number,
     finished: boolean
     createdAt?: string
+    User?: string
   }

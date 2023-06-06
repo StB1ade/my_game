@@ -11,6 +11,7 @@ const gameRouter = require('./src/routers/game.router');
 const UserApiRoter = require('./src/routers/UserApiRouter');
 
 const profileRouter = require('./src/routers/profile.router');
+const homeRouter = require('./src/routers/home.router');
 
 const sessionConfig = {
   name: 'MyGame',
@@ -39,6 +40,8 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public/')));
+
+app.use('/', homeRouter);
 
 app.use('/game', gameRouter);
 
