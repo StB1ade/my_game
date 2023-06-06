@@ -9,6 +9,7 @@ import { useAppDispatch } from "./redux/store/hook"
 import { checkUser } from "./redux/store/userSlice"
 import { GameBoard } from "./components/gameBoard/GameBoard"
 import { Home } from "./components/home/Home"
+import { ModalAnswer } from "./components/modalAnswer/ModalAnswer"
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
      </Routes>   
 
      <GameBoard/>
+     {/* <ModalAnswer/> */}
     </>
   )
 }
