@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 
-import { saveQuestion, saveScore } from '../../redux/store/gameSlice';
+import {
+  saveQuestion,
+  saveScore,
+  saveContinueGame,
+} from '../../redux/store/gameSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/store/hook';
 import { RootState } from '../../redux/store/store';
 import { useNavigate } from 'react-router-dom';
@@ -42,8 +46,8 @@ export const GameBoard = () => {
         setGameArr(result.gameArr);
         dispatch(saveQuestion(result.gameArr));
         dispatch(saveScore(result.score));
-        dispatch(saveScore(result.continueGame));
-        // console.log('result.score =====>', result.score);
+        dispatch(saveContinueGame(result.continueGame));
+        console.log('result.continueGame =====>', result.continueGame);
         console.log(result);
       } catch (error) {
         console.log(error);
@@ -103,22 +107,22 @@ export const GameBoard = () => {
         id: 0,
         questionId: 0,
       });
-      if (!continueGameGet) {
-        navigate('/profile');
-      }
       setSeeScore((prevstate) => !prevstate);
     }
   };
 
+  if (continueGameGet === 'game over') {
+    navigate('/profile');
+  }
   // console.log('seeScore=====>', seeScore);
-  console.log('continueGameGet=====>', continueGameGet);
+  // console.log('continueGameGet=====>', continueGameGet);
 
   return (
     <>
-        <div className="text-center text-xl font-semibold leading-7 text-gray-900 my-10 ">
-          <span>Текущий счёт:</span>
-          <span>{scoreGet}</span>
-        </div>
+      <div className="text-center text-xl font-semibold leading-7 text-gray-900 my-10 ">
+        <span>Текущий счёт:</span>
+        <span>{scoreGet}</span>
+      </div>
       <div className="flex justify-center flex-col">
         {questionGet &&
           questionGet.map((el, index) => (
@@ -174,7 +178,8 @@ export const GameBoard = () => {
                   </div>
                   {/*footer*/}
                   <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                    <input className='border-blue-600 border-2 mr-10 w-96 h-10 text-center'
+                    <input
+                      className="border-blue-600 border-2 mr-10 w-96 h-10 text-center"
                       type="text"
                       name="answer"
                       onChange={changeInputAnswerHandler}

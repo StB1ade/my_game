@@ -1,7 +1,7 @@
 export type GameType = {
   game: Category[];
   score: number;
-  continueGame: boolean;
+  continueGame: string;
 };
 
 export type Category = {

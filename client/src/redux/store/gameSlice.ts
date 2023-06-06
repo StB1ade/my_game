@@ -6,6 +6,7 @@ import { RootState } from './store';
 const initialState: GameType = {
   game: [],
   score: 0,
+  continueGame: '2222',
 };
 
 export const gameSlice = createSlice({
@@ -18,13 +19,13 @@ export const gameSlice = createSlice({
     saveScore: (state, action: PayloadAction<number>) => {
       state.score = action.payload;
     },
-    saveContinueGame: (state, action: PayloadAction<boolean>) => {
+    saveContinueGame: (state, action: PayloadAction<string>) => {
       state.continueGame = action.payload;
     },
   },
 });
 
-export const { saveQuestion, saveScore } = gameSlice.actions;
+export const { saveQuestion, saveScore, saveContinueGame } = gameSlice.actions;
 
 export const selectGame = (state: RootState) => state.game.game;
 export const selectScore = (state: RootState) => state.game.score;

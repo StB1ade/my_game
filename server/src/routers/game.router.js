@@ -111,7 +111,7 @@ router.get('/questions', async (req, res) => {
       });
       // console.log('gameArr======>', gameArr);
 
-      res.json({ gameArr, score: result.total_score, continueGame: true });
+      res.json({ gameArr, score: result.total_score, continueGame: 'game on' });
     } else {
       await Results.update(
         {
@@ -124,7 +124,7 @@ router.get('/questions', async (req, res) => {
           },
         }
       );
-      res.json({ continueGame: false });
+      res.json({ continueGame: 'game over' });
     }
   } catch (error) {
     console.log(error);
