@@ -32,23 +32,52 @@ export const Home = () => {
       
     return (
         <div>
-            <div>
-            <h1>Твоя Моя Игра</h1>
-            <h5>Для начала игры необходимо залогиниться или зарегестрироваться!</h5>
-            </div>
-            <h3>Чемпионы игры</h3>   
-         <div>
-        {allGames && allGames.map((el: ResultType) => (
-            <div key={el.id}>
 
-                <div>{el.User.userName}</div>
-                <div>{el.total_score}</div>
-                  <div>{el.createdAt?.slice(0, 10)}</div>
-        
-        </div>
+<div className="mt-10 px-4 sm:px-0 ">
+        <h1 className="text-center text-2xl font-semibold leading-7 text-gray-900">Твоя Моя Игра</h1>
+        <p className="text-center mt-1 text-sm leading-6 text-gray-500">Для начала игры необходимо залогиниться или зарегестрироваться!</p>
+      </div>
+      <br/>
+         <br/>
+      <div className="px-4 sm:px-0 ">
+        <div className="flex justify-center">
+      <img className="h-auto max-w-lg rounded-lg" src="/Oleg.JPG" alt="Oleg"/></div>
+         <br/>
+         <br/>
+            <h3 className="text-center text-base font-semibold leading-7 text-gray-700">Чемпионы игры</h3>
+            <p className="text-center mt-1 text-sm leading-6 text-gray-500">Их уже обняли, приподняли и перевернули</p>
+            </div>
+         <ul role="list" className="text-center divide-y divide-gray-100">
+         <li className="flex justify-center gap-x-6 py-5">
+            <div className="flex gap-x-4">
+             <div className="min-w-0 flex-auto">
+              <p className="text-sm font-bold leading-6 text-gray-900">Имя игрока</p>
+            </div>
+          </div>
+          <div className="sm:flex sm:flex-col sm:items-end">
+             <p className="text-sm font-bold leading-6 text-gray-900">Счет игры</p>
+             </div>
+             <div className="sm:flex sm:flex-col sm:items-end">
+             <p className="text-sm font-bold leading-6 text-gray-900">Дата игры</p>
+             </div>
+          </li> 
+        {allGames && allGames.map((el: ResultType) => (
+            <li key={el.id} className="flex justify-center gap-x-6 py-5">
+            <div className="flex gap-x-4">
+             <div className="min-w-0 flex-auto">
+              <p className="text-sm font-semibold leading-6 text-gray-900">{el.User.userName}</p>
+            </div>
+          </div>
+          <div className="sm:flex sm:flex-col sm:items-end">
+             <p className="text-sm leading-6 text-gray-900">{el.total_score}</p>
+             </div>
+             <div className="sm:flex sm:flex-col sm:items-end">
+             <p className="text-sm leading-6 text-gray-500">{el.createdAt?.slice(0, 10)}</p>
+          </div>
+          </li>
         ))
         }
+         </ul>
      </div>
-     </div>
-    )
+     )
 }

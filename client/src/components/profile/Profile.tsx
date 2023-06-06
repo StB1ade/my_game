@@ -32,21 +32,37 @@ export const Profile = () => {
       console.log(userGames);
       
     return (
-        <div>
-            <div>
-            <button>Начать игру</button>
-            <button>Продолжить игру</button>
+        <div className="mt-10 px-4 sm:px-0 ">
+            <h1 className="text-center text-2xl font-semibold leading-7 text-gray-900">Твой Мой Профиль</h1>
+            <div className="mt-10 flex justify-center">
+            <button type="button" className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Начать игру</button>
+            <button type="button" className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Продолжить игру</button>
+            </div>  
+            <ul role="list" className="divide-y divide-gray-100">
+            <li className="flex justify-center gap-x-6 py-5">
+            <div className="flex gap-x-4">
+             <div className="min-w-0 flex-auto">
+              <p className="text-sm ftext-center font-bold leading-6 text-gray-900">Дата игры</p>
             </div>
-            <h3>Profile</h3>   
-         <div>
+          </div>
+          <div className="sm:flex sm:flex-col sm:items-end">
+             <p className="text-sm text-center font-bold leading-6 text-gray-900">Счет игры</p>
+             </div>
+          </li> 
         {userGames && userGames.map((el: ResultType) => (
-            <div key={el.id}>
-                  <div>{el.createdAt?.slice(0, 10)}</div>
-        <div>{el.total_score}</div>
-        </div>
+            <li key={el.id} className="flex justify-center gap-x-10 py-5">
+            <div className="flex gap-x-4">
+             <div className="min-w-0 flex-auto">
+              <p className="text-sm text-center font-semibold leading-6 text-gray-900">{el.createdAt?.slice(0, 10)}</p>
+            </div>
+          </div>
+          <div className="hidden sm:flex sm:flex-col sm:items-end">
+             <p className="text-sm text-center leading-6 text-gray-900">{el.total_score}</p>
+             </div>
+          </li>
         ))
         }
-     </div>
+     </ul>
      </div>
     )
 }

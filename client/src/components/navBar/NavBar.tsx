@@ -31,10 +31,10 @@ export const NavBar = () => {
   }
 
   return (
-    <>
-    <div className="flex justify-between ">
+<nav className="border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+  <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
       <Link to="/">
-        <div className="text-2xl font-bold text-green-600">MyGame</div>
+        <div className="text-2xl font-bold text-blue-800">YourMyGame</div>
       </Link>
       <div className="flex justify-end">
         <Link to="/">
@@ -80,6 +80,6 @@ export const NavBar = () => {
         )}
       </div>
     </div>
-    </>
+    </nav>
   )
 }
