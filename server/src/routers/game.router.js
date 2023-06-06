@@ -24,7 +24,7 @@ router.get('/new', async (req, res) => {
         });
       })
     );
-    res.json({ msg: 'success' });
+    res.json({ newGame: true });
   } catch (error) {
     console.log(error);
   }
@@ -33,73 +33,82 @@ router.get('/new', async (req, res) => {
 router.get('/questions', async (req, res) => {
   try {
     const { user } = req.session;
-    console.log('user=====>', user);
-    const currQuestionsDirty = (
-      await CurrentQuestions.findAll({
-        where: { user_id: user.id },
-        include: [
-          {
-            model: Questions,
-            attributes: ['question', 'right_answer', 'score', 'topic_id'],
-          },
-        ],
-      })
-    ).map((el) => el.get({ plain: true }));
-
-    // console.log('currQuestionsDirty', currQuestionsDirty);
-
-    const currQuestions = currQuestionsDirty.map((el) => {
-      el.question = el.Question.question;
-      el.right_answer = el.Question.right_answer;
-      el.score = el.Question.score;
-      el.topic_id = el.Question.topic_id;
-      delete el.Question;
-      return el;
+    // console.log('user=====>', user);
+    const continueGame = await CurrentQuestions.findOne({
+      where: { answered: false },
     });
-    // console.log('currQuestions', currQuestions);
 
-    const currQuestions2d = [];
+    if (continueGame) {
+      const currQuestionsDirty = (
+        await CurrentQuestions.findAll({
+          where: { user_id: user.id },
+          include: [
+            {
+              model: Questions,
+              attributes: ['question', 'right_answer', 'score', 'topic_id'],
+            },
+          ],
+        })
+      ).map((el) => el.get({ plain: true }));
 
-    currQuestions.forEach((el) => {
-      const repIndex = currQuestions2d.findIndex(
-        (el2) => el2?.title === el.topic_id
-      );
-      if (repIndex === -1) {
-        const topic = { title: el.topic_id, id: el.topic_id };
-        topic.questions = [
-          {
+      // console.log('currQuestionsDirty', currQuestionsDirty);
+
+      const currQuestions = currQuestionsDirty.map((el) => {
+        el.question = el.Question.question;
+        el.right_answer = el.Question.right_answer;
+        el.score = el.Question.score;
+        el.topic_id = el.Question.topic_id;
+        delete el.Question;
+        return el;
+      });
+      // console.log('currQuestions', currQuestions);
+
+      const currQuestions2d = [];
+
+      currQuestions.forEach((el) => {
+        const repIndex = currQuestions2d.findIndex(
+          (el2) => el2?.title === el.topic_id
+        );
+        if (repIndex === -1) {
+          const topic = { title: el.topic_id, id: el.topic_id };
+          topic.questions = [
+            {
+              id: el.id,
+              questionId: el.question_id,
+              question: el.question,
+              right_answer: el.right_answer,
+              score: el.score,
+              answered: el.answered,
+            },
+          ];
+          currQuestions2d.push(topic);
+        } else {
+          currQuestions2d[repIndex]?.questions.push({
             id: el.id,
             questionId: el.question_id,
             question: el.question,
             right_answer: el.right_answer,
             score: el.score,
             answered: el.answered,
-          },
-        ];
-        currQuestions2d.push(topic);
-      } else {
-        currQuestions2d[repIndex]?.questions.push({
-          id: el.id,
-          questionId: el.question_id,
-          question: el.question,
-          right_answer: el.right_answer,
-          score: el.score,
-          answered: el.answered,
-        });
-      }
-    });
-    // console.log('currQuestions2d======>', currQuestions2d);
-    const topicsDirty = await Topics.findAll();
-    const topics = topicsDirty.map((el) => el.get({ plain: true }));
-    // console.log('topics======>', topics);
+          });
+        }
+      });
+      // console.log('currQuestions2d======>', currQuestions2d);
+      const topicsDirty = await Topics.findAll();
+      const topics = topicsDirty.map((el) => el.get({ plain: true }));
+      // console.log('topics======>', topics);
 
-    const gameArr = currQuestions2d.map((el) => {
-      const { title } = topics.find((el2) => el2.id === el.title);
-      el.title = title;
-      return el;
-    });
-    console.log('gameArr======>', gameArr);
-    res.json({ gameArr });
+      const gameArr = currQuestions2d.map((el) => {
+        const { title } = topics.find((el2) => el2.id === el.title);
+        el.title = title;
+        return el;
+      });
+      // console.log('gameArr======>', gameArr);
+
+      res.json({ gameArr });
+    } else {
+      res.json({ endGame: true });
+    }
   } catch (error) {
     console.log(error);
   }
