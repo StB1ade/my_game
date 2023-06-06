@@ -7,6 +7,7 @@ import { Profile } from "./components/profile/Profile"
 import { useEffect, useState } from "react"
 import { useAppDispatch } from "./redux/store/hook"
 import { checkUser } from "./redux/store/userSlice"
+import { Home } from "./components/home/Home"
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
     <>
      <NavBar/>
      <Routes>
+     <Route path="/" element={<Home />}/>
      <Route path="/reg" element={<Registration />}/>
      <Route path="/login" element={<Login />}/>
      <Route path='/profile' element={<Profile/>}/>
