@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { saveQuestion, saveScore } from '../../redux/store/gameSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/store/hook';
 import { RootState } from '../../redux/store/store';
+import { useNavigate } from 'react-router-dom';
 
 const initState = {
   bool: false,
@@ -13,9 +14,13 @@ const initState = {
 };
 
 export const GameBoard = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const questionGet = useAppSelector((state: RootState) => state.game.game);
   const scoreGet = useAppSelector((state: RootState) => state.game.score);
+  const continueGameGet = useAppSelector(
+    (state: RootState) => state.game.continueGame
+  );
 
   const [gameArr, setGameArr] = React.useState<any>([]);
 
@@ -37,6 +42,7 @@ export const GameBoard = () => {
         setGameArr(result.gameArr);
         dispatch(saveQuestion(result.gameArr));
         dispatch(saveScore(result.score));
+        dispatch(saveScore(result.continueGame));
         // console.log('result.score =====>', result.score);
         console.log(result);
       } catch (error) {
@@ -97,18 +103,22 @@ export const GameBoard = () => {
         id: 0,
         questionId: 0,
       });
+      if (!continueGameGet) {
+        navigate('/profile');
+      }
       setSeeScore((prevstate) => !prevstate);
     }
   };
 
-  console.log('seeScore=====>', seeScore);
+  // console.log('seeScore=====>', seeScore);
+  console.log('continueGameGet=====>', continueGameGet);
 
   return (
     <>
-        <div>
-          <span>Текущий счёт:</span>
-          <span>{scoreGet}</span>
-        </div>
+      <div>
+        <span>Текущий счёт:</span>
+        <span>{scoreGet}</span>
+      </div>
       <div className="flex justify-center flex-col">
         {questionGet &&
           questionGet.map((el, index) => (

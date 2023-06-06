@@ -7,7 +7,7 @@ const { Results } = require('../../db/models');
 router.post('/new', async (req, res) => {
   try {
     const { user } = req.session;
-    
+
     await CurrentQuestions.destroy({
       where: { user_id: user.id },
     });
@@ -23,7 +23,7 @@ router.post('/new', async (req, res) => {
           user_id: user.id,
           question_id: el.id,
         });
-      }),
+      })
     );
     res.json({ msg: 'OK' });
   } catch (error) {
@@ -73,7 +73,7 @@ router.get('/questions', async (req, res) => {
 
       currQuestions.forEach((el) => {
         const repIndex = currQuestions2d.findIndex(
-          (el2) => el2?.title === el.topic_id,
+          (el2) => el2?.title === el.topic_id
         );
         if (repIndex === -1) {
           const topic = { title: el.topic_id, id: el.topic_id };
@@ -111,7 +111,7 @@ router.get('/questions', async (req, res) => {
       });
       // console.log('gameArr======>', gameArr);
 
-      res.json({ gameArr, score: result.total_score });
+      res.json({ gameArr, score: result.total_score, continueGame: true });
     } else {
       await Results.update(
         {
@@ -122,9 +122,9 @@ router.get('/questions', async (req, res) => {
             user_id: user.id,
             finished: false,
           },
-        },
+        }
       );
-      res.json({ endGame: true });
+      res.json({ continueGame: false });
     }
   } catch (error) {
     console.log(error);
@@ -148,8 +148,8 @@ router.put('/questions/:id', async (req, res) => {
     });
 
     if (
-      question.right_answer.toLowerCase().split(' ').join('')
-      === answer.toLowerCase().split(' ').join('')
+      question.right_answer.toLowerCase().split(' ').join('') ===
+      answer.toLowerCase().split(' ').join('')
     ) {
       result.total_score += question.score;
     } else {
@@ -165,7 +165,7 @@ router.put('/questions/:id', async (req, res) => {
           user_id: user.id,
           finished: false,
         },
-      },
+      }
     );
 
     await CurrentQuestions.update(
@@ -177,7 +177,7 @@ router.put('/questions/:id', async (req, res) => {
           user_id: user.id,
           id,
         },
-      },
+      }
     );
 
     res.json({ success: true });

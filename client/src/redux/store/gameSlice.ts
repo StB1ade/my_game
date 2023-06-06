@@ -18,6 +18,9 @@ export const gameSlice = createSlice({
     saveScore: (state, action: PayloadAction<number>) => {
       state.score = action.payload;
     },
+    saveContinueGame: (state, action: PayloadAction<boolean>) => {
+      state.continueGame = action.payload;
+    },
   },
 });
 
@@ -25,5 +28,6 @@ export const { saveQuestion, saveScore } = gameSlice.actions;
 
 export const selectGame = (state: RootState) => state.game.game;
 export const selectScore = (state: RootState) => state.game.score;
+export const selectContinueGame = (state: RootState) => state.game.continueGame;
 
 export default gameSlice.reducer;
