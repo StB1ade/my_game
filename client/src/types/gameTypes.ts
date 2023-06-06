@@ -10,6 +10,7 @@ export type Category = {
 
 export type Questions = {
   id: number,
+  questionId: number,
   question: string,
   right_answer: string,
   score: number,

@@ -6,6 +6,7 @@ import { RootState } from '../../redux/store/store';
 
 const initState = {
   bool: false,
+  category: '',
   question: ""
 }
 
@@ -13,9 +14,6 @@ export const GameBoard = () => {
 
   const dispatch = useAppDispatch()
   const questionGet = useAppSelector((state: RootState) => state.game.game)
-
-console.log(questionGet);
-
 
   const [gameArr, setGameArr] = React.useState<any>([]);
 
@@ -37,38 +35,28 @@ console.log(questionGet);
     })();
   }, []);
 
-  const openQuestion = (question: number ) =>{
-    setShowModal({bool: true, question})
+  const openQuestion = (category: number,question: number ) =>{
+    
+    setShowModal({bool: true,category: questionGet[category].title , question: questionGet[category].questions[question].question})
   }
 
-  const closeQuestion = (question) => {
-    setShowModal({bool: false, question})
+  const closeQuestion = () => {
+    setShowModal({bool: false, category: '',question: ''})
   }
 
   return (
     <>
     <div className="flex justify-center flex-col">
       {questionGet &&
-        questionGet.map((el) => (
+        questionGet.map((el, index) => (
           <div className="px-5 flex flex-row items-center" key={el.id}>
             <div className="bg-emerald-400 border-solid border-2 border-black text-center h-10 px-2 whitespace-nowrap rounded-lg">{el.title}</div>
             <div className='flex flex-row'>
               {el &&
-                el.questions.map((el2) =>  <div onClick={() => openQuestion(el2.id)} id={el2.id} className="bg-lime-400 border-solid border-2 border-black text-center h-10 w-32 rounded-lg hover:rounded-3xl hover:bg-lime-500" key={el2.id}>{el2.score}</div>
-                
-                
-                
+                el.questions.map((el2, i) =>  <div onClick={() => openQuestion(index, i)} id={el2.id} className="bg-lime-400 border-solid border-2 border-black text-center h-10 w-32 rounded-lg hover:rounded-3xl hover:bg-lime-500" key={el2.id}>{el2.score}</div>
                 )}
-
-
             </div>
-
-            
-
           </div>
-
-          
-
         ))}
         {showModal.bool ? (
                   <>
@@ -81,11 +69,11 @@ console.log(questionGet);
                           {/*header*/}
                           <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                             <h3 className="text-3xl font-semibold">
-                              {el.title}
+                              {showModal.category}
                             </h3>
                             <button
                               className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                              onClick={() => closeQuestion(null)}
+                              onClick={() => closeQuestion()}
                             >
                               <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
                                 ×
@@ -95,7 +83,7 @@ console.log(questionGet);
                           {/*body*/}
                           <div className="relative p-6 flex-auto">
                             <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                              {el2.question}
+                              {showModal.question}
                             </p>
                           </div>
                           {/*footer*/}
@@ -103,14 +91,14 @@ console.log(questionGet);
                             <button
                               className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                               type="button"
-                              onClick={() => closeQuestion(null)}
+                              onClick={() => closeQuestion()}
                             >
                               Close
                             </button>
                             <button
                               className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                               type="button"
-                              onClick={() => closeQuestion(null)}
+                              onClick={() => closeQuestion()}
                             >
                               Save Changes
                             </button>
@@ -123,10 +111,6 @@ console.log(questionGet);
                 ) : null}  
 
     </div>
-
-
-    
-      
     </>
   );
 };
