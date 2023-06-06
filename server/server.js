@@ -7,6 +7,7 @@ const cors = require('cors');
 const expressSession = require('express-session');
 const FileStore = require('session-file-store')(expressSession);
 const gameRouter = require('./src/routers/game.router');
+const isAuth = require('./src/middlewares/isAuth');
 
 const UserApiRoter = require('./src/routers/UserApiRouter');
 

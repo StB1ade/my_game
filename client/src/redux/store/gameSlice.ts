@@ -6,7 +6,7 @@ import { RootState } from './store';
 const initialState: GameType = {
   game: [],
   score: 0,
-  continueGame: '2222',
+  continueGame: '',
 };
 
 export const gameSlice = createSlice({

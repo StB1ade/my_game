@@ -47,8 +47,8 @@ export const GameBoard = () => {
         dispatch(saveQuestion(result.gameArr));
         dispatch(saveScore(result.score));
         dispatch(saveContinueGame(result.continueGame));
-        console.log('result.continueGame =====>', result.continueGame);
-        console.log(result);
+        // console.log('result.continueGame =====>', result.continueGame);
+        // console.log(result);
       } catch (error) {
         console.log(error);
       }
