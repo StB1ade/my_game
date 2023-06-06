@@ -39,6 +39,11 @@ router.get('/questions', async (req, res) => {
     });
 
     if (continueGame) {
+      const result = await Results.findOne({
+        where: { user_id: user.id, finished: false },
+        raw: true,
+      });
+
       const currQuestionsDirty = (
         await CurrentQuestions.findAll({
           where: { user_id: user.id },
@@ -105,7 +110,7 @@ router.get('/questions', async (req, res) => {
       });
       // console.log('gameArr======>', gameArr);
 
-      res.json({ gameArr });
+      res.json({ gameArr, score: result.total_score });
     } else {
       res.json({ endGame: true });
     }
@@ -119,28 +124,29 @@ router.put('/questions/:id', async (req, res) => {
     const { id } = req.params;
     const { user } = req.session;
     const { answer, questionId } = req.body;
+
     const result = await Results.findOne({
       where: { user_id: user.id, finished: false },
-      plain: true,
+      raw: true,
     });
 
     const question = await Questions.findOne({
-      where: { question_id: questionId },
-      plain: true,
+      where: { id: questionId },
+      raw: true,
     });
 
     if (
       question.right_answer.toLowerCase().split(' ').join('') ===
       answer.toLowerCase().split(' ').join('')
     ) {
-      result.score += question.score;
+      result.total_score += question.score;
     } else {
-      result.score -= question.score;
+      result.total_score -= question.score;
     }
 
     await Results.update(
       {
-        total_score: result.score,
+        total_score: result.total_score,
       },
       {
         where: {
@@ -161,6 +167,8 @@ router.put('/questions/:id', async (req, res) => {
         },
       }
     );
+
+    res.json({ success: true });
   } catch (error) {
     console.log(error);
   }
