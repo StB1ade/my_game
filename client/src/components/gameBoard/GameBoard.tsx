@@ -105,11 +105,11 @@ export const GameBoard = () => {
 
   return (
     <>
-      <div className="flex justify-center flex-col">
         <div>
           <span>Текущий счёт:</span>
           <span>{scoreGet}</span>
         </div>
+      <div className="flex justify-center flex-col">
         {questionGet &&
           questionGet.map((el, index) => (
             <div className="px-5 flex flex-row items-center" key={el.id}>

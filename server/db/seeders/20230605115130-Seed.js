@@ -246,7 +246,6 @@ module.exports = {
         {
           total_score: 1200,
           user_id: 1,
-          finished: true,
         },
       ],
       {},

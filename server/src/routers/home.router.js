@@ -5,7 +5,7 @@ const { Users } = require('../../db/models');
 router.get('/', async (req, res) => {
   try {
     const resultData = (await Results.findAll({
-      order: [['total_score', 'ASC']],
+      order: [['total_score', 'DESC']],
       include: [
         {
           model: Users,

@@ -4,9 +4,10 @@ const { Questions } = require('../../db/models');
 const { Topics } = require('../../db/models');
 const { Results } = require('../../db/models');
 
-router.get('/new', async (req, res) => {
+router.post('/new', async (req, res) => {
   try {
     const { user } = req.session;
+    
     await CurrentQuestions.destroy({
       where: { user_id: user.id },
     });
@@ -22,9 +23,9 @@ router.get('/new', async (req, res) => {
           user_id: user.id,
           question_id: el.id,
         });
-      })
+      }),
     );
-    res.json({ newGame: true });
+    res.json({ msg: 'OK' });
   } catch (error) {
     console.log(error);
   }
@@ -35,7 +36,7 @@ router.get('/questions', async (req, res) => {
     const { user } = req.session;
     // console.log('user=====>', user);
     const continueGame = await CurrentQuestions.findOne({
-      where: { answered: false },
+      where: { answered: false, user_id: user.id },
     });
 
     if (continueGame) {
@@ -72,7 +73,7 @@ router.get('/questions', async (req, res) => {
 
       currQuestions.forEach((el) => {
         const repIndex = currQuestions2d.findIndex(
-          (el2) => el2?.title === el.topic_id
+          (el2) => el2?.title === el.topic_id,
         );
         if (repIndex === -1) {
           const topic = { title: el.topic_id, id: el.topic_id };
@@ -112,6 +113,17 @@ router.get('/questions', async (req, res) => {
 
       res.json({ gameArr, score: result.total_score });
     } else {
+      await Results.update(
+        {
+          finished: true,
+        },
+        {
+          where: {
+            user_id: user.id,
+            finished: false,
+          },
+        },
+      );
       res.json({ endGame: true });
     }
   } catch (error) {
@@ -136,8 +148,8 @@ router.put('/questions/:id', async (req, res) => {
     });
 
     if (
-      question.right_answer.toLowerCase().split(' ').join('') ===
-      answer.toLowerCase().split(' ').join('')
+      question.right_answer.toLowerCase().split(' ').join('')
+      === answer.toLowerCase().split(' ').join('')
     ) {
       result.total_score += question.score;
     } else {
@@ -153,7 +165,7 @@ router.put('/questions/:id', async (req, res) => {
           user_id: user.id,
           finished: false,
         },
-      }
+      },
     );
 
     await CurrentQuestions.update(
@@ -165,7 +177,7 @@ router.put('/questions/:id', async (req, res) => {
           user_id: user.id,
           id,
         },
-      }
+      },
     );
 
     res.json({ success: true });

@@ -46,9 +46,10 @@ function App() {
      <Route path="/reg" element={<Registration />}/>
      <Route path="/login" element={<Login />}/>
      <Route path='/profile' element={<Profile/>}/>
+     <Route path='/game' element={<GameBoard/>}/>
      </Routes>   
 
-     <GameBoard/>
+     
      {/* <ModalAnswer/> */}
     </>
   )
